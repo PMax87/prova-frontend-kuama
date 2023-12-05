@@ -8,6 +8,7 @@ import {
   setCostantRegularPaymentsFieldsOfForm,
 } from "./redux/FormDataReducer";
 import details from "./data";
+import { CustomForm } from "./components";
 
 function App() {
   const dispatch = useDispatch();
@@ -24,8 +25,7 @@ function App() {
 
   return (
     <>
-      {" "}
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
+      <CustomForm />
     </>
   );
 }

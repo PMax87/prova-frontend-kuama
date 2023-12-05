@@ -7,6 +7,9 @@ interface InitialState {
   uniqueEntityType: string[];
   costantFieldsOfFrom: string[];
   costantRegularPayments: string[];
+  paymentEntityType: string | undefined;
+  paymentMethodType: string | undefined;
+  companyNameField: string[];
 }
 
 const initialState: InitialState = {
@@ -15,6 +18,9 @@ const initialState: InitialState = {
   uniqueEntityType: [],
   costantFieldsOfFrom: [],
   costantRegularPayments: [],
+  paymentEntityType: undefined,
+  paymentMethodType: undefined,
+  companyNameField: [],
 };
 
 export const formDataFromApiSlice = createSlice({
@@ -52,6 +58,23 @@ export const formDataFromApiSlice = createSlice({
       );
       return { ...state, costantRegularPayments: tempRegularPaymentsField };
     },
+    setPaymentEntityType: (state, action: PayloadAction<string>) => {
+      return { ...state, paymentEntityType: action.payload };
+    },
+    setPaymentMethodType: (state, action: PayloadAction<string>) => {
+      return { ...state, paymentMethodType: action.payload };
+    },
+    setBeneficiaryNameOfField: (state) => {
+      let tempCompanyName: string[] = [];
+      if (state.paymentEntityType === "company") {
+        tempCompanyName = Array.from(
+          Object.keys(state.allFormData[1].fields)
+        ).splice(0, 1);
+      } else {
+        tempCompanyName = Array.from(Object.keys(state.allFormData[0].fields));
+      }
+      return { ...state, companyNameField: tempCompanyName };
+    },
   },
 });
 
@@ -61,5 +84,8 @@ export const {
   createUniqueEntityType,
   setCostantPriorityPaymentsFieldsOfForm,
   setCostantRegularPaymentsFieldsOfForm,
+  setPaymentEntityType,
+  setPaymentMethodType,
+  setBeneficiaryNameOfField,
 } = formDataFromApiSlice.actions;
 export default formDataFromApiSlice.reducer;
