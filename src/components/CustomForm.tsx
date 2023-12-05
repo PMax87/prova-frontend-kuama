@@ -1,5 +1,5 @@
 import { Formik, Form } from "formik";
-import { Input, Select, Tabs, TabList, Tab } from "@chakra-ui/react";
+import { Input, Select, Tabs, TabList, Tab, Button } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux";
 import {
@@ -53,7 +53,7 @@ const CustomForm = () => {
   };
 
   return (
-    <Formik>
+    <Formik initialValues={{}} onSubmit={(values) => console.log(values)}>
       {(formik) => {
         return (
           <Form>
@@ -63,23 +63,56 @@ const CustomForm = () => {
               onChange={(e) => onHandelChangeEntity(e)}
             >
               {paymentsEntityType.map((entityType, index) => {
-                return <option key={index}>{entityType}</option>;
+                return (
+                  <option className="capitalize" key={index}>
+                    {entityType}
+                  </option>
+                );
               })}
             </Select>
             {selectedPaymentEntityType && (
               <>
-                {selectedPaymentEntityType === "company"
-                  ? beneficiaryFieldName.map((companyName, index) => {
-                      return <Input placeholder={companyName} key={index} />;
-                    })
-                  : beneficiaryFieldName.map((item, index) => {
-                      if (item === "beneficiary_first_name") {
-                        return <Input placeholder={item} key={index} />;
-                      }
-                      if (item === "beneficiary_last_name") {
-                        return <Input placeholder={item} key={index} />;
-                      }
-                    })}
+                <div className="flex flex-col-reverse">
+                  {selectedPaymentEntityType === "company"
+                    ? beneficiaryFieldName.map((companyName, index) => {
+                        return (
+                          <Input
+                            onChange={formik.handleChange}
+                            className="capitalize"
+                            placeholder={removeUnderscore(companyName)}
+                            key={index}
+                            name={companyName}
+                            id={companyName}
+                          />
+                        );
+                      })
+                    : beneficiaryFieldName.map((beneficiaryNameField) => {
+                        if (beneficiaryNameField === "beneficiary_first_name") {
+                          return (
+                            <Input
+                              id={beneficiaryNameField}
+                              name={beneficiaryNameField}
+                              onChange={formik.handleChange}
+                              className="capitalize"
+                              placeholder={removeUnderscore(
+                                beneficiaryNameField
+                              )}
+                            />
+                          );
+                        }
+                        if (beneficiaryNameField === "beneficiary_last_name") {
+                          return (
+                            <Input
+                              onChange={formik.handleChange}
+                              className="capitalize"
+                              placeholder={removeUnderscore(
+                                beneficiaryNameField
+                              )}
+                            />
+                          );
+                        }
+                      })}
+                </div>
                 <Tabs onClick={(e) => onHandleTabChange(e)}>
                   <TabList>
                     {paymentsType.map((paymentType, index) => {
@@ -89,13 +122,30 @@ const CustomForm = () => {
                 </Tabs>
                 {paymentMethodtype === "regular"
                   ? regularPaymentFieldOfForm.map((field, index) => {
-                      return <Input placeholder={field} key={index} />;
+                      return (
+                        <Input
+                          placeholder={field}
+                          key={index}
+                          name={field}
+                          id={field}
+                        />
+                      );
                     })
                   : costantsPriorityFieldsOfForm.map((field, index) => {
-                      return <Input placeholder={field} key={index} />;
+                      return (
+                        <Input
+                          onChange={formik.handleChange}
+                          placeholder={removeUnderscore(field)}
+                          className="capitalize"
+                          key={index}
+                          name={field}
+                          id={field}
+                        />
+                      );
                     })}
               </>
             )}
+            <Button type="submit">Invia</Button>
           </Form>
         );
       }}
