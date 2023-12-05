@@ -4,10 +4,10 @@ import {
   createUniquePayemntsType,
   setFormData,
   createUniqueEntityType,
+  setCostantPriorityPaymentsFieldsOfForm,
+  setCostantRegularPaymentsFieldsOfForm,
 } from "./redux/FormDataReducer";
 import details from "./data";
-import { useSelector } from "react-redux";
-import { RootState } from "./redux";
 
 function App() {
   const dispatch = useDispatch();
@@ -17,14 +17,10 @@ function App() {
       dispatch(setFormData(details));
       dispatch(createUniquePayemntsType());
       dispatch(createUniqueEntityType());
+      dispatch(setCostantPriorityPaymentsFieldsOfForm());
+      dispatch(setCostantRegularPaymentsFieldsOfForm());
     }
   }, [dispatch]);
-
-  const uniquePaymentsType = useSelector(
-    (state: RootState) => state.formData.uniqueEntityType
-  );
-
-  console.log(uniquePaymentsType);
 
   return (
     <>

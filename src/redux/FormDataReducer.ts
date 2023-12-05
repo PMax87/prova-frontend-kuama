@@ -5,12 +5,16 @@ interface InitialState {
   allFormData: DataResponse[];
   uniquePaymentsType: string[];
   uniqueEntityType: string[];
+  costantFieldsOfFrom: string[];
+  costantRegularPayments: string[];
 }
 
 const initialState: InitialState = {
   allFormData: [],
   uniquePaymentsType: [],
   uniqueEntityType: [],
+  costantFieldsOfFrom: [],
+  costantRegularPayments: [],
 };
 
 export const formDataFromApiSlice = createSlice({
@@ -36,9 +40,26 @@ export const formDataFromApiSlice = createSlice({
       );
       return { ...state, uniqueEntityType: tempEntityType };
     },
+    setCostantPriorityPaymentsFieldsOfForm: (state) => {
+      const tempCostantFieldsOfForm = Array.from(
+        Object.keys(state.allFormData[1].fields).slice(1)
+      );
+      return { ...state, costantFieldsOfFrom: tempCostantFieldsOfForm };
+    },
+    setCostantRegularPaymentsFieldsOfForm: (state) => {
+      const tempRegularPaymentsField = Array.from(
+        Object.keys(state.allFormData[2].fields)
+      );
+      return { ...state, costantRegularPayments: tempRegularPaymentsField };
+    },
   },
 });
 
-export const { setFormData, createUniquePayemntsType, createUniqueEntityType } =
-  formDataFromApiSlice.actions;
+export const {
+  setFormData,
+  createUniquePayemntsType,
+  createUniqueEntityType,
+  setCostantPriorityPaymentsFieldsOfForm,
+  setCostantRegularPaymentsFieldsOfForm,
+} = formDataFromApiSlice.actions;
 export default formDataFromApiSlice.reducer;
