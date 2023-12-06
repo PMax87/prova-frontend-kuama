@@ -3,11 +3,13 @@ import { Input, Select, Tabs, TabList, Tab, Button } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux";
 import {
+  resetForm,
   setBeneficiaryNameOfField,
   setPaymentEntityType,
   setPaymentMethodType,
 } from "../redux/FormDataReducer";
 import { removeUnderscore } from "../assets/utils/removeUnderscorePlaceholder";
+import { useEffect } from "react";
 
 const CustomForm = () => {
   const dispatch = useDispatch();
@@ -48,7 +50,12 @@ const CustomForm = () => {
   };
 
   const onHandelChangeEntity = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(setPaymentEntityType(e.target.value));
+    const value = e.target.value;
+    if (value === "") {
+      dispatch(resetForm());
+    } else {
+      dispatch(setPaymentEntityType(value));
+    }
     dispatch(setBeneficiaryNameOfField());
   };
 
@@ -86,37 +93,49 @@ const CustomForm = () => {
                           />
                         );
                       })
-                    : beneficiaryFieldName.map((beneficiaryNameField) => {
-                        if (beneficiaryNameField === "beneficiary_first_name") {
-                          return (
-                            <Input
-                              id={beneficiaryNameField}
-                              name={beneficiaryNameField}
-                              onChange={formik.handleChange}
-                              className="capitalize"
-                              placeholder={removeUnderscore(
-                                beneficiaryNameField
-                              )}
-                            />
-                          );
+                    : beneficiaryFieldName.map(
+                        (beneficiaryNameField, index) => {
+                          if (
+                            beneficiaryNameField === "beneficiary_first_name"
+                          ) {
+                            return (
+                              <Input
+                                key={index}
+                                id={beneficiaryNameField}
+                                name={beneficiaryNameField}
+                                onChange={formik.handleChange}
+                                className="capitalize"
+                                placeholder={removeUnderscore(
+                                  beneficiaryNameField
+                                )}
+                              />
+                            );
+                          }
+                          if (
+                            beneficiaryNameField === "beneficiary_last_name"
+                          ) {
+                            return (
+                              <Input
+                                key={index}
+                                onChange={formik.handleChange}
+                                className="capitalize"
+                                placeholder={removeUnderscore(
+                                  beneficiaryNameField
+                                )}
+                              />
+                            );
+                          }
                         }
-                        if (beneficiaryNameField === "beneficiary_last_name") {
-                          return (
-                            <Input
-                              onChange={formik.handleChange}
-                              className="capitalize"
-                              placeholder={removeUnderscore(
-                                beneficiaryNameField
-                              )}
-                            />
-                          );
-                        }
-                      })}
+                      )}
                 </div>
                 <Tabs onClick={(e) => onHandleTabChange(e)}>
                   <TabList>
                     {paymentsType.map((paymentType, index) => {
-                      return <Tab key={index}>{paymentType}</Tab>;
+                      return (
+                        <Tab key={index} className="capitalize">
+                          {paymentType}
+                        </Tab>
+                      );
                     })}
                   </TabList>
                 </Tabs>
