@@ -9,7 +9,11 @@ import {
   setPaymentMethodType,
 } from "../redux/FormDataReducer";
 import { removeUnderscore } from "../assets/utils/removeUnderscorePlaceholder";
-import { useEffect } from "react";
+
+interface PropsType {
+  onHandleTabChange: () => void;
+  onHandelChangeEntity: () => void;
+}
 
 const CustomForm = () => {
   const dispatch = useDispatch();
@@ -63,9 +67,9 @@ const CustomForm = () => {
     <Formik initialValues={{}} onSubmit={(values) => console.log(values)}>
       {(formik) => {
         return (
-          <Form>
+          <Form className="flex flex-col gap-6 w-[560px] shadow-xl p-10">
             <Select
-              placeholder="Select a Value"
+              placeholder="Seleziona un tipo di pagamento"
               className="capitalize"
               onChange={(e) => onHandelChangeEntity(e)}
             >
@@ -79,7 +83,7 @@ const CustomForm = () => {
             </Select>
             {selectedPaymentEntityType && (
               <>
-                <div className="flex flex-col-reverse">
+                <div className="flex flex-col-reverse gap-6">
                   {selectedPaymentEntityType === "company"
                     ? beneficiaryFieldName.map((companyName, index) => {
                         return (
@@ -117,6 +121,8 @@ const CustomForm = () => {
                             return (
                               <Input
                                 key={index}
+                                id={beneficiaryNameField}
+                                name={beneficiaryNameField}
                                 onChange={formik.handleChange}
                                 className="capitalize"
                                 placeholder={removeUnderscore(
@@ -128,11 +134,11 @@ const CustomForm = () => {
                         }
                       )}
                 </div>
-                <Tabs onClick={(e) => onHandleTabChange(e)}>
+                <Tabs onClick={(e) => onHandleTabChange(e)} className="w-full">
                   <TabList>
                     {paymentsType.map((paymentType, index) => {
                       return (
-                        <Tab key={index} className="capitalize">
+                        <Tab key={index} className="capitalize w-1/2">
                           {paymentType}
                         </Tab>
                       );
@@ -164,7 +170,19 @@ const CustomForm = () => {
                     })}
               </>
             )}
-            <Button type="submit">Invia</Button>
+            <div className="grid grid-cols-2 gap-6">
+              <Button
+                type="button"
+                colorScheme="teal"
+                variant={"outline"}
+                onClick={() => formik.resetForm()}
+              >
+                Resetta il form
+              </Button>
+              <Button type="submit" colorScheme="teal">
+                Invia
+              </Button>
+            </div>
           </Form>
         );
       }}

@@ -65,15 +65,17 @@ export const formDataFromApiSlice = createSlice({
       return { ...state, paymentMethodType: action.payload };
     },
     setBeneficiaryNameOfField: (state) => {
-      let tempCompanyName: string[] = [];
+      let tempBeneficiaryFields: string[] = [];
       if (state.paymentEntityType === "company") {
-        tempCompanyName = Array.from(
+        tempBeneficiaryFields = Array.from(
           Object.keys(state.allFormData[1].fields)
         ).splice(0, 1);
       } else {
-        tempCompanyName = Array.from(Object.keys(state.allFormData[0].fields));
+        tempBeneficiaryFields = Array.from(
+          Object.keys(state.allFormData[0].fields)
+        );
       }
-      return { ...state, companyNameField: tempCompanyName };
+      return { ...state, companyNameField: tempBeneficiaryFields };
     },
     resetForm: (state) => {
       return {
