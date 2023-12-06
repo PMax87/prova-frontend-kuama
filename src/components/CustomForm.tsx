@@ -1,5 +1,14 @@
 import { Formik, Form } from "formik";
-import { Input, Select, Tabs, TabList, Tab, Button } from "@chakra-ui/react";
+import {
+  Input,
+  Select,
+  Tabs,
+  TabList,
+  Tab,
+  Button,
+  FormControl,
+  FormErrorMessage,
+} from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux";
 import {
@@ -9,10 +18,11 @@ import {
   setPaymentMethodType,
 } from "../redux/FormDataReducer";
 import { removeUnderscore } from "../assets/utils/removeUnderscorePlaceholder";
+import { InitialValues, getInitialValues } from "../utils/getInitialValues";
+import { getValidationSchema } from "../utils/getValidationSchema";
 
-interface PropsType {
-  onHandleTabChange: () => void;
-  onHandelChangeEntity: () => void;
+interface Props {
+  [key: string]: string | number | boolean | undefined;
 }
 
 const CustomForm = () => {
@@ -63,9 +73,23 @@ const CustomForm = () => {
     dispatch(setBeneficiaryNameOfField());
   };
 
+  const initialValues = getInitialValues(
+    selectedPaymentEntityType as string,
+    paymentMethodtype as string
+  );
+
+  const validationSchema = getValidationSchema();
+
   return (
-    <Formik initialValues={{}} onSubmit={(values) => console.log(values)}>
+    <Formik
+      initialValues={initialValues}
+      validateOnChange={false}
+      enableReinitialize={true}
+      validationSchema={validationSchema}
+      onSubmit={(values) => alert(JSON.stringify(values, null, 2))}
+    >
       {(formik) => {
+        console.log(formik.errors);
         return (
           <Form className="flex flex-col gap-6 w-[560px] shadow-xl p-10">
             <Select
@@ -87,14 +111,33 @@ const CustomForm = () => {
                   {selectedPaymentEntityType === "company"
                     ? beneficiaryFieldName.map((companyName, index) => {
                         return (
-                          <Input
-                            onChange={formik.handleChange}
-                            className="capitalize"
-                            placeholder={removeUnderscore(companyName)}
-                            key={index}
-                            name={companyName}
-                            id={companyName}
-                          />
+                          <div className="flex-col-reverse" key={index}>
+                            <FormControl
+                              isInvalid={formik.errors[companyName]}
+                              id={companyName}
+                            >
+                              <Input
+                                onBlur={formik.handleBlur}
+                                onChange={formik.handleChange}
+                                className="capitalize"
+                                placeholder={removeUnderscore(companyName)}
+                                name={companyName}
+                                id={companyName}
+                                value={
+                                  formik.values[
+                                    companyName as keyof InitialValues
+                                  ] || ""
+                                }
+                              />
+                              <FormErrorMessage>
+                                {
+                                  formik.errors[
+                                    companyName as keyof InitialValues
+                                  ]
+                                }
+                              </FormErrorMessage>
+                            </FormControl>
+                          </div>
                         );
                       })
                     : beneficiaryFieldName.map(
@@ -103,16 +146,21 @@ const CustomForm = () => {
                             beneficiaryNameField === "beneficiary_first_name"
                           ) {
                             return (
-                              <Input
-                                key={index}
-                                id={beneficiaryNameField}
-                                name={beneficiaryNameField}
-                                onChange={formik.handleChange}
-                                className="capitalize"
-                                placeholder={removeUnderscore(
-                                  beneficiaryNameField
-                                )}
-                              />
+                              <>
+                                <Input
+                                  key={index}
+                                  id={beneficiaryNameField}
+                                  name={beneficiaryNameField}
+                                  onChange={formik.handleChange}
+                                  className="capitalize"
+                                  placeholder={removeUnderscore(
+                                    beneficiaryNameField
+                                  )}
+                                  value={
+                                    formik.values[beneficiaryNameField] || ""
+                                  }
+                                />
+                              </>
                             );
                           }
                           if (
@@ -128,6 +176,9 @@ const CustomForm = () => {
                                 placeholder={removeUnderscore(
                                   beneficiaryNameField
                                 )}
+                                value={
+                                  formik.values[beneficiaryNameField] || ""
+                                }
                               />
                             );
                           }
@@ -148,41 +199,80 @@ const CustomForm = () => {
                 {paymentMethodtype === "regular"
                   ? regularPaymentFieldOfForm.map((field, index) => {
                       return (
-                        <Input
-                          placeholder={field}
-                          key={index}
-                          name={field}
+                        <FormControl
+                          isInvalid={
+                            formik.errors[field] && formik.touched[field]
+                          }
                           id={field}
-                        />
+                          key={index}
+                        >
+                          <Input
+                            onBlur={formik.handleBlur}
+                            placeholder={field}
+                            name={field}
+                            id={field}
+                            onChange={formik.handleChange}
+                            value={
+                              formik.values[field as keyof InitialValues] || ""
+                            }
+                          />
+                          <FormErrorMessage>
+                            {formik.errors[field]}
+                          </FormErrorMessage>
+                        </FormControl>
                       );
                     })
                   : costantsPriorityFieldsOfForm.map((field, index) => {
                       return (
-                        <Input
-                          onChange={formik.handleChange}
-                          placeholder={removeUnderscore(field)}
-                          className="capitalize"
+                        <FormControl
+                          isInvalid={
+                            formik.errors[field] && formik.touched[field]
+                          }
                           key={index}
-                          name={field}
-                          id={field}
-                        />
+                        >
+                          <Input
+                            onBlur={formik.handleBlur}
+                            onChange={formik.handleChange}
+                            placeholder={removeUnderscore(field)}
+                            className="capitalize"
+                            name={field}
+                            id={field}
+                            value={
+                              formik.values[field as keyof InitialValues] || ""
+                            }
+                          />
+                          <FormErrorMessage>
+                            {formik.errors[field]}
+                          </FormErrorMessage>
+                        </FormControl>
                       );
                     })}
+                <div className="grid grid-cols-2 gap-6">
+                  <Button
+                    type="button"
+                    colorScheme="teal"
+                    variant={"outline"}
+                    onClick={() => formik.resetForm({ values: initialValues })}
+                  >
+                    Resetta il form
+                  </Button>
+                  <Button
+                    type="submit"
+                    colorScheme="teal"
+                    sx={
+                      !formik.isValid
+                        ? {
+                            opacity: 0.5,
+                            pointerEvents: "none",
+                          }
+                        : { opacity: 1, pointerEvents: "normal" }
+                    }
+                  >
+                    Invia
+                  </Button>
+                </div>
               </>
             )}
-            <div className="grid grid-cols-2 gap-6">
-              <Button
-                type="button"
-                colorScheme="teal"
-                variant={"outline"}
-                onClick={() => formik.resetForm()}
-              >
-                Resetta il form
-              </Button>
-              <Button type="submit" colorScheme="teal">
-                Invia
-              </Button>
-            </div>
           </Form>
         );
       }}
