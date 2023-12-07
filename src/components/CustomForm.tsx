@@ -7,7 +7,6 @@ import SelectEntityType from "./SelectEntityType";
 import InputWithValidation from "./InputWithValidation";
 import PaymentsMethodTab from "./PaymentsMethodTab";
 import Buttons from "./Buttons";
-import { Collapse } from "@chakra-ui/react";
 
 const CustomForm = () => {
   const costantsPriorityFieldsOfForm = useSelector(

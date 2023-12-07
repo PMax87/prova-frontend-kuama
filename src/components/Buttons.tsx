@@ -12,7 +12,7 @@ const Buttons: React.FC<ButtonsProps> = (props) => {
     <div className="grid grid-cols-2 gap-6">
       <Button
         type="button"
-        colorScheme="teal"
+        colorScheme="pink"
         variant={"outline"}
         onClick={() => props.formik.resetForm({ values: props.initialValues })}
       >
@@ -20,7 +20,7 @@ const Buttons: React.FC<ButtonsProps> = (props) => {
       </Button>
       <Button
         type="submit"
-        colorScheme="teal"
+        colorScheme="pink"
         isDisabled={!props.formik.isValid}
       >
         Invia

@@ -33,7 +33,7 @@ const PaymentsMethodTab = () => {
           );
         })}
       </TabList>
-      <TabIndicator mt="-1.5px" height="2px" bg="teal" borderRadius="1px" />
+      <TabIndicator mt="-1.5px" height="2px" bg="pink.600" borderRadius="1px" />
     </Tabs>
   );
 };
