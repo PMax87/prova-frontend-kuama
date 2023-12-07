@@ -21,14 +21,7 @@ const Buttons: React.FC<ButtonsProps> = (props) => {
       <Button
         type="submit"
         colorScheme="teal"
-        sx={
-          !props.formik.isValid
-            ? {
-                opacity: 0.5,
-                pointerEvents: "none",
-              }
-            : { opacity: 1, pointerEvents: "normal" }
-        }
+        isDisabled={!props.formik.isValid}
       >
         Invia
       </Button>
