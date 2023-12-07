@@ -77,7 +77,7 @@ export const formDataFromApiSlice = createSlice({
       }
       return { ...state, companyNameField: tempBeneficiaryFields };
     },
-    resetForm: (state) => {
+    resetPaymentsType: (state) => {
       return {
         ...state,
         paymentEntityType: undefined,
@@ -96,6 +96,6 @@ export const {
   setPaymentEntityType,
   setPaymentMethodType,
   setBeneficiaryNameOfField,
-  resetForm,
+  resetPaymentsType,
 } = formDataFromApiSlice.actions;
 export default formDataFromApiSlice.reducer;
