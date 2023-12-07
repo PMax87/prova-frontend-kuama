@@ -6,6 +6,7 @@ export const getValidationSchema = () => {
     beneficiary_address: Yup.string().required("Il campo è richesto"),
     iban: Yup.string()
       .min(27, "La lunghezza dell IBAN non è corretta")
+      .max(27, "L'Iban non può essere più lungo di 27 caratteri")
       .required("Il campo è richesto"),
     beneficiary_city: Yup.string().required("Il campo è richesto"),
     bic_swift: Yup.string().required("Il campo è richesto"),

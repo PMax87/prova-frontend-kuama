@@ -17,13 +17,9 @@ import {
   setPaymentEntityType,
   setPaymentMethodType,
 } from "../redux/FormDataReducer";
-import { removeUnderscore } from "../assets/utils/removeUnderscorePlaceholder";
+import { removeUnderscore } from "../utils/removeUnderscorePlaceholder";
 import { InitialValues, getInitialValues } from "../utils/getInitialValues";
 import { getValidationSchema } from "../utils/getValidationSchema";
-
-interface Props {
-  [key: string]: string | number | boolean | undefined;
-}
 
 const CustomForm = () => {
   const dispatch = useDispatch();
@@ -89,7 +85,6 @@ const CustomForm = () => {
       onSubmit={(values) => alert(JSON.stringify(values, null, 2))}
     >
       {(formik) => {
-        console.log(formik.errors);
         return (
           <Form className="flex flex-col gap-6 w-[560px] shadow-xl p-10">
             <Select
@@ -113,13 +108,16 @@ const CustomForm = () => {
                         return (
                           <div className="flex-col-reverse" key={index}>
                             <FormControl
-                              isInvalid={formik.errors[companyName]}
+                              isInvalid={Boolean(
+                                formik.errors[
+                                  companyName as keyof typeof formik.values
+                                ]
+                              )}
                               id={companyName}
                             >
                               <Input
                                 onBlur={formik.handleBlur}
                                 onChange={formik.handleChange}
-                                className="capitalize"
                                 placeholder={removeUnderscore(companyName)}
                                 name={companyName}
                                 id={companyName}
@@ -132,7 +130,7 @@ const CustomForm = () => {
                               <FormErrorMessage>
                                 {
                                   formik.errors[
-                                    companyName as keyof InitialValues
+                                    companyName as keyof typeof formik.values
                                   ]
                                 }
                               </FormErrorMessage>
@@ -152,7 +150,6 @@ const CustomForm = () => {
                                   id={beneficiaryNameField}
                                   name={beneficiaryNameField}
                                   onChange={formik.handleChange}
-                                  className="capitalize"
                                   placeholder={removeUnderscore(
                                     beneficiaryNameField
                                   )}
@@ -172,7 +169,6 @@ const CustomForm = () => {
                                 id={beneficiaryNameField}
                                 name={beneficiaryNameField}
                                 onChange={formik.handleChange}
-                                className="capitalize"
                                 placeholder={removeUnderscore(
                                   beneficiaryNameField
                                 )}
@@ -208,7 +204,7 @@ const CustomForm = () => {
                         >
                           <Input
                             onBlur={formik.handleBlur}
-                            placeholder={field}
+                            placeholder={removeUnderscore(field)}
                             name={field}
                             id={field}
                             onChange={formik.handleChange}
@@ -234,7 +230,6 @@ const CustomForm = () => {
                             onBlur={formik.handleBlur}
                             onChange={formik.handleChange}
                             placeholder={removeUnderscore(field)}
-                            className="capitalize"
                             name={field}
                             id={field}
                             value={

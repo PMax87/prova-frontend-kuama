@@ -6,7 +6,6 @@ export interface InitialValues {
   iban?: string;
   beneficiary_city?: string;
   bic_swift?: string;
-  [key: string]: string | number | boolean | undefined;
 }
 
 export const getInitialValues = (
