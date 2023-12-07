@@ -8,7 +8,8 @@ import {
   setPaymentEntityType,
 } from "../redux/FormDataReducer";
 
-const SelectEntityType = () => {
+
+const SelectEntityType= () => {
   const dispatch = useDispatch();
 
   const paymentsEntityType = useSelector(

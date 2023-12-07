@@ -1,4 +1,4 @@
-import { Tabs, TabList, Tab } from "@chakra-ui/react";
+import { Tabs, TabList, Tab, TabIndicator } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux";
 import { setPaymentMethodType } from "../redux/FormDataReducer";
@@ -21,7 +21,8 @@ const PaymentsMethodTab = () => {
     <Tabs
       onClick={(e) => onHandleTabChange(e)}
       className="w-full"
-      colorScheme="teal"
+      position="relative"
+      variant="unstyled"
     >
       <TabList>
         {paymentsType.map((paymentType, index) => {
@@ -32,6 +33,7 @@ const PaymentsMethodTab = () => {
           );
         })}
       </TabList>
+      <TabIndicator mt="-1.5px" height="2px" bg="teal" borderRadius="1px" />
     </Tabs>
   );
 };
