@@ -27,6 +27,7 @@ const InputWithValidation: React.FC<TextInputProps> = (props) => {
           onChange={props.formik.handleChange}
           placeholder={removeUnderscore(props.placeholder)}
           id={props.name}
+          name={props.name}
           value={props.formik.values[props.name as keyof InitialValues] || ""}
         />
         <FormErrorMessage>

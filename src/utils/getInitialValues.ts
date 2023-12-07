@@ -15,6 +15,7 @@ export const getInitialValues = (
   if (selectedEntityType === "company") {
     if (paymentsType === "regular") {
       return {
+        beneficiary_company_name: "",
         iban: "",
       };
     }
@@ -29,6 +30,8 @@ export const getInitialValues = (
   if (selectedEntityType === "individual") {
     if (paymentsType === "regular") {
       return {
+        beneficiary_first_name: "",
+        beneficiary_last_name: "",
         iban: "",
       };
     }
