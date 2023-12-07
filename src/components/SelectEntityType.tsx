@@ -3,7 +3,7 @@ import { Select } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux";
 import {
-  resetPaymentsType,
+  resetPaymentsEntityType,
   setBeneficiaryNameOfField,
   setPaymentEntityType,
 } from "../redux/FormDataReducer";
@@ -15,10 +15,10 @@ const SelectEntityType = () => {
     (state: RootState) => state.formData.uniqueEntityType
   );
 
-  const onHandelChangeEntity = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const onHandleChangeEntity = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
     if (value === "") {
-      dispatch(resetPaymentsType());
+      dispatch(resetPaymentsEntityType());
     } else {
       dispatch(setPaymentEntityType(value));
     }
@@ -28,7 +28,7 @@ const SelectEntityType = () => {
   return (
     <Select
       placeholder="Seleziona un tipo di pagamento"
-      onChange={(e) => onHandelChangeEntity(e)}
+      onChange={(e) => onHandleChangeEntity(e)}
       className="capitalize"
     >
       {paymentsEntityType.map((entityType, indexEntityType) => {
