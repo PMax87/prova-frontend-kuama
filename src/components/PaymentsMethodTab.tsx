@@ -18,7 +18,11 @@ const PaymentsMethodTab = () => {
   };
 
   return (
-    <Tabs onClick={(e) => onHandleTabChange(e)} className="w-full">
+    <Tabs
+      onClick={(e) => onHandleTabChange(e)}
+      className="w-full"
+      colorScheme="teal"
+    >
       <TabList>
         {paymentsType.map((paymentType, index) => {
           return (
